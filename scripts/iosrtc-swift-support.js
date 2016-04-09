@@ -103,30 +103,22 @@ module.exports = function(context) {
 
   // "project.pbxproj"
   // Parsing it
-  xcodeProject.parse(function(error) {
-    var configurations, buildSettings;
+  xcodeProject.parseSync();
+  var configurations, buildSettings;
 
-    if (error) {
-      debugerror('an error occurred during the parsing of the project file');
-
-      return;
-    }
-
-
-    configurations = nonComments(xcodeProject.pbxXCBuildConfigurationSection());
-    // Adding or changing the parameters we need
-    Object.keys(configurations).forEach(function(config) {
-      buildSettings = configurations[config].buildSettings;
-      buildSettings.LD_RUNPATH_SEARCH_PATHS = RUNPATH_SEARCH_PATHS_XCODE;
-      buildSettings.SWIFT_OBJC_BRIDGING_HEADER = swiftBridgingHeadXcode;
-      buildSettings.IPHONEOS_DEPLOYMENT_TARGET = BUILD_VERSION_XCODE;
-      buildSettings.ENABLE_BITCODE = ENABLE_BITCODE_XCODE;
-    });
-
-    // Writing the file again
-    fs.writeFileSync(xcodeProjectPath, xcodeProject.writeSync(), 'utf-8');
-    debug('file correctly fixed: ' + xcodeProjectPath);
+  configurations = nonComments(xcodeProject.pbxXCBuildConfigurationSection());
+  // Adding or changing the parameters we need
+  Object.keys(configurations).forEach(function(config) {
+    buildSettings = configurations[config].buildSettings;
+    buildSettings.LD_RUNPATH_SEARCH_PATHS = RUNPATH_SEARCH_PATHS_XCODE;
+    buildSettings.SWIFT_OBJC_BRIDGING_HEADER = swiftBridgingHeadXcode;
+    buildSettings.IPHONEOS_DEPLOYMENT_TARGET = BUILD_VERSION_XCODE;
+    buildSettings.ENABLE_BITCODE = ENABLE_BITCODE_XCODE;
   });
+
+  // Writing the file again
+  fs.writeFileSync(xcodeProjectPath, xcodeProject.writeSync(), 'utf-8');
+  debug('file correctly fixed: ' + xcodeProjectPath);
 };
 
 
