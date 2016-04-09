@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="io.guzz.guzz-xcode-config" version="0.0.1">
+    <name>Guzz Xcode project configuration</name>
+    <description>Sets parameters in the Xcode project</description>
+    <license>MIT</license>
+    <keywords>guzz,xcode</keywords>
+    <platform name="ios">
+      <hook type="after_plugin_install" src="scripts/iosrtc-swift-support.js" />
+    </platform>
+</plugin>
