@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        id="io.guzz.guzz-xcode-config" version="0.0.1">
+        id="io.guzz.cordova-xcode-config-guzz" version="0.0.1">
     <name>Guzz Xcode project configuration</name>
     <description>Sets parameters in the Xcode project</description>
     <license>MIT</license>
