@@ -8,9 +8,9 @@
 console.log('running script');
 
 var
-  fs = require("fs"),
-  path = require("path"),
-  xcode = require('xcode'),
+  fs = context.requireCordovaModule("fs"),
+  path = context.requireCordovaModule("path"),
+  xcode = context.requireCordovaModule('xcode'),
 
   BUILD_VERSION = '9.2',
   BUILD_VERSION_XCODE = '"' + BUILD_VERSION + '"',
