@@ -125,9 +125,7 @@ module.exports = function(context) {
 
     // Writing the file again
     fs.writeFileSync(xcodeProjectPath, xcodeProject.writeSync(), 'utf-8');
-    console.log(xcodeProject.writeSync());
     debug('file correctly fixed: ' + xcodeProjectPath);
-    throw "Stop.";
   });
 };
 
