@@ -114,6 +114,9 @@ module.exports = function(context) {
     buildSettings.SWIFT_OBJC_BRIDGING_HEADER = swiftBridgingHeadXcode;
     buildSettings.IPHONEOS_DEPLOYMENT_TARGET = BUILD_VERSION_XCODE;
     buildSettings.ENABLE_BITCODE = ENABLE_BITCODE_XCODE;
+    // New settings for Xcode 8
+    buildSettings.SWIFT_VERSION = "2.3"; // use legacy Swift version
+    buildSettings.DEVELOPMENT_TEAM = "6J92E6W79J"; // set dev team for code signing
   });
 
   // Writing the file again
