@@ -19,8 +19,9 @@ var
   ENABLE_BITCODE_XCODE = '"' + ENABLE_BITCODE + '"',
   BRIDGING_HEADER_END = '/Plugins/cordova-plugin-iosrtc/cordova-plugin-iosrtc-Bridging-Header.h',
   COMMENT_KEY = /_comment$/,
-  SWIFT_VERSION = "2.3",
-  DEVELOPMENT_TEAM = "6J92E6W79J";
+  // New for Xcode 8
+  SWIFT_VERSION = "2.3", // use legacy Swift version
+  DEVELOPMENT_TEAM = "6J92E6W79J"; // set dev team for code signing
 
 
 // Helpers
@@ -89,6 +90,7 @@ module.exports = function(context) {
   debug('- "Runpath Search Paths" to: ' + RUNPATH_SEARCH_PATHS_XCODE);
   debug('- "Objective-C Bridging Header" to: ' + swiftBridgingHeadXcode);
   debug('- "ENABLE_BITCODE" set to: ' + ENABLE_BITCODE_XCODE);
+  // New for Xcode 8
   debug('- Swift version set to: ' + SWIFT_VERSION);
   debug('- Development team set to: ' + DEVELOPMENT_TEAM);
 
@@ -100,6 +102,7 @@ module.exports = function(context) {
   swiftOptions.push('SWIFT_OBJC_BRIDGING_HEADER = ' + swiftBridgingHead);
   swiftOptions.push('IPHONEOS_DEPLOYMENT_TARGET = ' + BUILD_VERSION);
   swiftOptions.push('ENABLE_BITCODE = ' + ENABLE_BITCODE);
+  // New for Xcode 8
   swiftOptions.push('SWIFT_VERSION = ' + SWIFT_VERSION);
   swiftOptions.push('DEVELOPMENT_TEAM = ' + DEVELOPMENT_TEAM);
   // NOTE: Not needed
@@ -120,9 +123,9 @@ module.exports = function(context) {
     buildSettings.SWIFT_OBJC_BRIDGING_HEADER = swiftBridgingHeadXcode;
     buildSettings.IPHONEOS_DEPLOYMENT_TARGET = BUILD_VERSION_XCODE;
     buildSettings.ENABLE_BITCODE = ENABLE_BITCODE_XCODE;
-    // New settings for Xcode 8
-    buildSettings.SWIFT_VERSION = SWIFT_VERSION; // use legacy Swift version
-    buildSettings.DEVELOPMENT_TEAM = DEVELOPMENT_TEAM; // set dev team for code signing
+    // New for Xcode 8
+    buildSettings.SWIFT_VERSION = SWIFT_VERSION;
+    buildSettings.DEVELOPMENT_TEAM = DEVELOPMENT_TEAM;
   });
 
   // Writing the file again
