@@ -7,8 +7,7 @@
 
 console.log('running script');
 
-var
-  fs = require("fs"),
+var fs = require("fs"),
   path = require("path"),
 
   BUILD_VERSION = '9.0',
@@ -19,17 +18,15 @@ var
   ENABLE_BITCODE_XCODE = '"' + ENABLE_BITCODE + '"',
   BRIDGING_HEADER_END = '/Plugins/cordova-plugin-iosrtc/cordova-plugin-iosrtc-Bridging-Header.h',
   COMMENT_KEY = /_comment$/,
-  // New for Xcode 8
-  SWIFT_VERSION = "2.3", // use legacy Swift version
+  // Removed for Xcode 8.3
+  // SWIFT_VERSION = "2.3", // use legacy Swift version
   DEVELOPMENT_TEAM = "6J92E6W79J"; // set dev team for code signing
-
 
 // Helpers
 
 // Returns the project name
 function getProjectName(protoPath) {
-  var
-    cordovaConfigPath = path.join(protoPath, 'config.xml'),
+  var cordovaConfigPath = path.join(protoPath, 'config.xml'),
     content = fs.readFileSync(cordovaConfigPath, 'utf-8');
 
   return /<name>([\s\S]*)<\/name>/mi.exec(content)[1].trim();
@@ -37,8 +34,7 @@ function getProjectName(protoPath) {
 
 // Drops the comments
 function nonComments(obj) {
-  var
-    keys = Object.keys(obj),
+  var keys = Object.keys(obj),
     newObj = {},
     i = 0;
 
@@ -51,12 +47,10 @@ function nonComments(obj) {
   return newObj;
 }
 
-
 // Starting here
 
 module.exports = function(context) {
-  var
-    xcode = context.requireCordovaModule('xcode'),
+  var xcode = context.requireCordovaModule('xcode'),
     projectRoot = context.opts.projectRoot,
     projectName = getProjectName(projectRoot),
     xcconfigPath = path.join(projectRoot, '/platforms/ios/cordova/build.xcconfig'),
@@ -90,10 +84,9 @@ module.exports = function(context) {
   debug('- "Runpath Search Paths" to: ' + RUNPATH_SEARCH_PATHS_XCODE);
   debug('- "Objective-C Bridging Header" to: ' + swiftBridgingHeadXcode);
   debug('- "ENABLE_BITCODE" set to: ' + ENABLE_BITCODE_XCODE);
-  // New for Xcode 8
-  debug('- Swift version set to: ' + SWIFT_VERSION);
+  // Removed for Xcode 8.3
+  // debug('- Swift version set to: ' + SWIFT_VERSION);
   debug('- Development team set to: ' + DEVELOPMENT_TEAM);
-
 
   // Massaging the files
 
@@ -102,8 +95,8 @@ module.exports = function(context) {
   swiftOptions.push('SWIFT_OBJC_BRIDGING_HEADER = ' + swiftBridgingHead);
   swiftOptions.push('IPHONEOS_DEPLOYMENT_TARGET = ' + BUILD_VERSION);
   swiftOptions.push('ENABLE_BITCODE = ' + ENABLE_BITCODE);
-  // New for Xcode 8
-  swiftOptions.push('SWIFT_VERSION = ' + SWIFT_VERSION);
+  // Removed for Xcode 8.3
+  // swiftOptions.push('SWIFT_VERSION = ' + SWIFT_VERSION);
   swiftOptions.push('DEVELOPMENT_TEAM = ' + DEVELOPMENT_TEAM);
   // NOTE: Not needed
   // swiftOptions.push('EMBEDDED_CONTENT_CONTAINS_SWIFT = YES');
@@ -113,7 +106,8 @@ module.exports = function(context) {
   // "project.pbxproj"
   // Parsing it
   xcodeProject.parseSync();
-  var configurations, buildSettings;
+  var configurations,
+    buildSettings;
 
   configurations = nonComments(xcodeProject.pbxXCBuildConfigurationSection());
   // Adding or changing the parameters we need
@@ -123,8 +117,8 @@ module.exports = function(context) {
     buildSettings.SWIFT_OBJC_BRIDGING_HEADER = swiftBridgingHeadXcode;
     buildSettings.IPHONEOS_DEPLOYMENT_TARGET = BUILD_VERSION_XCODE;
     buildSettings.ENABLE_BITCODE = ENABLE_BITCODE_XCODE;
-    // New for Xcode 8
-    buildSettings.SWIFT_VERSION = SWIFT_VERSION;
+    // Removed for Xcode 8.3
+    // buildSettings.SWIFT_VERSION = SWIFT_VERSION;
     buildSettings.DEVELOPMENT_TEAM = DEVELOPMENT_TEAM;
   });
 
@@ -133,11 +127,9 @@ module.exports = function(context) {
   debug('file correctly fixed: ' + xcodeProjectPath);
 };
 
-
 function debug(msg) {
   console.log('iosrtc-swift-support.js [INFO] ' + msg);
 }
-
 
 function debugerror(msg) {
   console.error('iosrtc-swift-support.js [ERROR] ' + msg);
