@@ -16,10 +16,10 @@ var fs = require("fs"),
   RUNPATH_SEARCH_PATHS_XCODE = '"' + RUNPATH_SEARCH_PATHS + '"',
   ENABLE_BITCODE = 'NO',
   ENABLE_BITCODE_XCODE = '"' + ENABLE_BITCODE + '"',
-  BRIDGING_HEADER_END = '/Plugins/cordova-plugin-iosrtc/cordova-plugin-iosrtc-Bridging-Header.h',
+  // BRIDGING_HEADER_END = '/Plugins/cordova-plugin-iosrtc/cordova-plugin-iosrtc-Bridging-Header.h',
   COMMENT_KEY = /_comment$/,
   // Update for Xcode 8.3 and cordova-plugin-iosrtc 4.0.2; for lower versions, use 2.3
-  SWIFT_VERSION = "3.0",
+  // SWIFT_VERSION = "3.0",
   DEVELOPMENT_TEAM = "6J92E6W79J"; // set dev team for code signing
 
 // Helpers
@@ -56,8 +56,8 @@ module.exports = function(context) {
     xcconfigPath = path.join(projectRoot, '/platforms/ios/cordova/build.xcconfig'),
     xcodeProjectName = projectName + '.xcodeproj',
     xcodeProjectPath = path.join(projectRoot, 'platforms', 'ios', xcodeProjectName, 'project.pbxproj'),
-    swiftBridgingHead = projectName + BRIDGING_HEADER_END,
-    swiftBridgingHeadXcode = '"' + swiftBridgingHead + '"',
+    // swiftBridgingHead = projectName + BRIDGING_HEADER_END,
+    // swiftBridgingHeadXcode = '"' + swiftBridgingHead + '"',
     swiftOptions = [''], // <-- begin to file appending AFTER initial newline
     xcodeProject;
 
@@ -82,19 +82,19 @@ module.exports = function(context) {
   debug('fixing issues in the generated project files:');
   debug('- "iOS Deployment Target" and "Deployment Target" to: ' + BUILD_VERSION_XCODE);
   debug('- "Runpath Search Paths" to: ' + RUNPATH_SEARCH_PATHS_XCODE);
-  debug('- "Objective-C Bridging Header" to: ' + swiftBridgingHeadXcode);
+  // debug('- "Objective-C Bridging Header" to: ' + swiftBridgingHeadXcode);
   debug('- "ENABLE_BITCODE" set to: ' + ENABLE_BITCODE_XCODE);
-  debug('- Swift version set to: ' + SWIFT_VERSION);
+  // debug('- Swift version set to: ' + SWIFT_VERSION);
   debug('- Development team set to: ' + DEVELOPMENT_TEAM);
 
   // Massaging the files
 
   // "build.xcconfig"
   swiftOptions.push('LD_RUNPATH_SEARCH_PATHS = ' + RUNPATH_SEARCH_PATHS);
-  swiftOptions.push('SWIFT_OBJC_BRIDGING_HEADER = ' + swiftBridgingHead);
+  // swiftOptions.push('SWIFT_OBJC_BRIDGING_HEADER = ' + swiftBridgingHead);
   swiftOptions.push('IPHONEOS_DEPLOYMENT_TARGET = ' + BUILD_VERSION);
   swiftOptions.push('ENABLE_BITCODE = ' + ENABLE_BITCODE);
-  swiftOptions.push('SWIFT_VERSION = ' + SWIFT_VERSION);
+  // swiftOptions.push('SWIFT_VERSION = ' + SWIFT_VERSION);
   swiftOptions.push('DEVELOPMENT_TEAM = ' + DEVELOPMENT_TEAM);
   // NOTE: Not needed
   // swiftOptions.push('EMBEDDED_CONTENT_CONTAINS_SWIFT = YES');
@@ -112,10 +112,10 @@ module.exports = function(context) {
   Object.keys(configurations).forEach(function(config) {
     buildSettings = configurations[config].buildSettings;
     buildSettings.LD_RUNPATH_SEARCH_PATHS = RUNPATH_SEARCH_PATHS_XCODE;
-    buildSettings.SWIFT_OBJC_BRIDGING_HEADER = swiftBridgingHeadXcode;
+    // buildSettings.SWIFT_OBJC_BRIDGING_HEADER = swiftBridgingHeadXcode;
     buildSettings.IPHONEOS_DEPLOYMENT_TARGET = BUILD_VERSION_XCODE;
     buildSettings.ENABLE_BITCODE = ENABLE_BITCODE_XCODE;
-    buildSettings.SWIFT_VERSION = SWIFT_VERSION;
+    // buildSettings.SWIFT_VERSION = SWIFT_VERSION;
     buildSettings.DEVELOPMENT_TEAM = DEVELOPMENT_TEAM;
   });
 
