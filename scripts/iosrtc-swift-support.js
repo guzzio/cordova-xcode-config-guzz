@@ -54,12 +54,13 @@ module.exports = function(context) {
   var xcode = context.requireCordovaModule('xcode'),
     projectRoot = context.opts.projectRoot,
     projectName = getProjectName(projectRoot),
+    projectPath = path.join(projectRoot, 'platforms', 'ios', xcodeProjectName),
     xcconfigPath = path.join(projectRoot, '/platforms/ios/cordova/build.xcconfig'),
     xcodeProjectName = projectName + '.xcodeproj',
-    xcodeProjectPath = path.join(projectRoot, 'platforms', 'ios', xcodeProjectName, 'project.pbxproj'),
+    xcodeProjectPath = path.join(projectPath, 'project.pbxproj'),
     swiftBridgingHead = projectName + BRIDGING_HEADER_END,
     swiftBridgingHeadXcode = '"' + swiftBridgingHead + '"',
-    swiftBridgingHeadPath = path.join(projectRoot, swiftBridgingHead),
+    swiftBridgingHeadPath = path.join(projectPath, BRIDGING_HEADER_END),
     swiftOptions = [''], // <-- begin to file appending AFTER initial newline
     xcodeProject;
 
