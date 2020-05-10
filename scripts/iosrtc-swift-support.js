@@ -7,75 +7,69 @@
 
 console.log('running script');
 
-var fs = require("fs"),
-  path = require("path"),
-
-  BUILD_VERSION = '9.0',
-  BUILD_VERSION_XCODE = '"' + BUILD_VERSION + '"',
-  RUNPATH_SEARCH_PATHS = '@executable_path/Frameworks',
-  RUNPATH_SEARCH_PATHS_XCODE = '"' + RUNPATH_SEARCH_PATHS + '"',
-  ENABLE_BITCODE = 'NO',
-  ENABLE_BITCODE_XCODE = '"' + ENABLE_BITCODE + '"',
-  BRIDGING_HEADER_END = '/Bridging-Header.h',
-  BRIDGING_HEADER_CONTENT = '\n#import "cordova-plugin-iosrtc-Bridging-Header.h"',
-  COMMENT_KEY = /_comment$/,
-  // Update for Xcode 8.3 and cordova-plugin-iosrtc 4.0.2; for lower versions, use 2.3
-  SWIFT_VERSION = "3.0",
-  DEVELOPMENT_TEAM = "6J92E6W79J"; // set dev team for code signing
+var fs = require('fs');
+var path = require('path');
+var BUILD_VERSION = '9.0';
+var BUILD_VERSION_XCODE = '"' + BUILD_VERSION + '"';
+var RUNPATH_SEARCH_PATHS = '@executable_path/Frameworks';
+var RUNPATH_SEARCH_PATHS_XCODE = '"' + RUNPATH_SEARCH_PATHS + '"';
+var ENABLE_BITCODE = 'NO';
+var ENABLE_BITCODE_XCODE = '"' + ENABLE_BITCODE + '"';
+var BRIDGING_HEADER_END = '/Bridging-Header.h';
+var BRIDGING_HEADER_CONTENT = '\n#import "cordova-plugin-iosrtc-Bridging-Header.h"';
+var COMMENT_KEY = /_comment$/;
+// Update for Xcode 8.3 and cordova-plugin-iosrtc 4.0.2; for lower versions, use 2.3
+var SWIFT_VERSION = '3.0';
+var DEVELOPMENT_TEAM = '6J92E6W79J'; // set dev team for code signing
 
 // Helpers
 
 // Returns the project name
 function getProjectName(protoPath) {
-  var cordovaConfigPath = path.join(protoPath, 'config.xml'),
-    content = fs.readFileSync(cordovaConfigPath, 'utf-8');
-
-  return /<name>([\s\S]*)<\/name>/mi.exec(content)[1].trim();
+  var cordovaConfigPath = path.join(protoPath, 'config.xml');
+  var content = fs.readFileSync(cordovaConfigPath, 'utf-8');
+  return /<name>([\s\S]*)<\/name>/im.exec(content)[1].trim();
 }
 
 // Drops the comments
 function nonComments(obj) {
-  var keys = Object.keys(obj),
-    newObj = {},
-    i = 0;
-
+  var keys = Object.keys(obj);
+  var newObj = {};
+  var i = 0;
   for (i; i < keys.length; i += 1) {
     if (!COMMENT_KEY.test(keys[i])) {
       newObj[keys[i]] = obj[keys[i]];
     }
   }
-
   return newObj;
 }
 
 // Starting here
 
 module.exports = function(context) {
-  var xcode = context.requireCordovaModule('xcode'),
-    projectRoot = context.opts.projectRoot,
-    projectName = getProjectName(projectRoot),
-    platformPath = path.join(projectRoot, 'platforms', 'ios'),
-    projectPath = path.join(platformPath, projectName),
-    xcconfigPath = path.join(projectRoot, '/platforms/ios/cordova/build.xcconfig'),
-    xcodeProjectName = projectName + '.xcodeproj',
-    xcodeProjectPath = path.join(platformPath, xcodeProjectName, 'project.pbxproj'),
-    swiftBridgingHead = projectName + BRIDGING_HEADER_END,
-    swiftBridgingHeadXcode = '"' + swiftBridgingHead + '"',
-    swiftBridgingHeadPath = path.join(projectPath, BRIDGING_HEADER_END),
-    swiftOptions = [''], // <-- begin to file appending AFTER initial newline
-    xcodeProject;
+  var xcode = context.requireCordovaModule('xcode');
+  var projectRoot = context.opts.projectRoot;
+  var projectName = getProjectName(projectRoot);
+  var platformPath = path.join(projectRoot, 'platforms', 'ios');
+  var projectPath = path.join(platformPath, projectName);
+  var xcconfigPath = path.join(projectRoot, '/platforms/ios/cordova/build.xcconfig');
+  var xcodeProjectName = projectName + '.xcodeproj';
+  var xcodeProjectPath = path.join(platformPath, xcodeProjectName, 'project.pbxproj');
+  var swiftBridgingHead = projectName + BRIDGING_HEADER_END;
+  var swiftBridgingHeadXcode = '"' + swiftBridgingHead + '"';
+  var swiftBridgingHeadPath = path.join(projectPath, BRIDGING_HEADER_END);
+  var swiftOptions = ['']; // <-- begin to file appending AFTER initial newline
+  var xcodeProject;
 
   // Checking if the project files are in the right place
   if (!fs.existsSync(xcodeProjectPath)) {
     debugerror('an error occurred searching the project file at: "' + xcodeProjectPath + '"');
-
     return;
   }
   debug('".pbxproj" project file found: ' + xcodeProjectPath);
 
   if (!fs.existsSync(xcconfigPath)) {
     debugerror('an error occurred searching the project file at: "' + xcconfigPath + '"');
-
     return;
   }
   debug('".xcconfig" project file found: ' + xcconfigPath);
@@ -108,8 +102,7 @@ module.exports = function(context) {
   // "project.pbxproj"
   // Parsing it
   xcodeProject.parseSync();
-  var configurations,
-    buildSettings;
+  var configurations, buildSettings;
 
   configurations = nonComments(xcodeProject.pbxXCBuildConfigurationSection());
   // Adding or changing the parameters we need
@@ -130,7 +123,7 @@ module.exports = function(context) {
   // Append bridging header
   debug('patching bridging header ' + swiftBridgingHeadPath);
   var bridgingHeaderContent = fs.readFileSync(swiftBridgingHeadPath, 'utf-8');
-  bridgingHeaderContent += BRIDGING_HEADER_CONTENT
+  bridgingHeaderContent += BRIDGING_HEADER_CONTENT;
   fs.writeFileSync(swiftBridgingHeadPath, bridgingHeaderContent, 'utf-8');
 };
 

@@ -1,0 +1,27 @@
+{
+  "name": "io.guzz.cordova.cordova-plugin-xcodeconfigguzz",
+  "version": "1.0.0",
+  "description": "Sets parameters in the Xcode project",
+  "cordova": {
+    "id": "io.guzz.cordova.cordova-plugin-xcodeconfigguzz",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guzzio/cordova-xcode-config-guzz.git"
+  },
+  "keywords": [
+    "guzz",
+    "xcode",
+    "ecosystem:cordova",
+    "cordova-ios"
+  ],
+  "author": "Tom Brückner",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/guzzio/cordova-xcode-config-guzz/issues"
+  },
+  "homepage": "https://github.com/guzzio/cordova-xcode-config-guzz#readme"
+}
