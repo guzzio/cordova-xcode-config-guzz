@@ -19,6 +19,7 @@ var BRIDGING_HEADER_CONTENT = '\n#import "cordova-plugin-iosrtc-Bridging-Header.
 var COMMENT_KEY = /_comment$/;
 var SWIFT_VERSION = '5.0'; // Meteor: 5.0, iosrtc: Swift 4.2+
 var DEVELOPMENT_TEAM = '6J92E6W79J'; // set dev team for code signing
+var CODE_SIGN_IDENTITY = '"Apple Development"';
 
 // Helpers
 
@@ -45,7 +46,6 @@ function nonComments(obj) {
 // Starting here
 
 module.exports = function(context) {
-  var xcode = context.requireCordovaModule('xcode');
   var projectRoot = context.opts.projectRoot;
   var projectName = getProjectName(projectRoot);
   var platformPath = path.join(projectRoot, 'platforms', 'ios');
@@ -112,6 +112,7 @@ module.exports = function(context) {
     // buildSettings.ENABLE_BITCODE = ENABLE_BITCODE_XCODE;
     buildSettings.SWIFT_VERSION = SWIFT_VERSION;
     buildSettings.DEVELOPMENT_TEAM = DEVELOPMENT_TEAM;
+    buildSettings.CODE_SIGN_IDENTITY = CODE_SIGN_IDENTITY;
   });
 
   // Writing the file again
@@ -126,9 +127,9 @@ module.exports = function(context) {
 };
 
 function debug(msg) {
-  console.log('iosrtc-swift-support.js [INFO] ' + msg);
+  console.log('xcode-config-guzz.js [INFO] ' + msg);
 }
 
 function debugerror(msg) {
-  console.error('iosrtc-swift-support.js [ERROR] ' + msg);
+  console.error('xcode-config-guzz.js [ERROR] ' + msg);
 }

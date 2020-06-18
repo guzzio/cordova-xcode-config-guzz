@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/guzzio/cordova-xcode-config-guzz/issues"
   },
-  "homepage": "https://github.com/guzzio/cordova-xcode-config-guzz#readme"
+  "homepage": "https://github.com/guzzio/cordova-xcode-config-guzz#readme",
+  "dependencies": {
+    "xcode": "^2.0.0"
+  }
 }
