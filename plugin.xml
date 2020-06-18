@@ -6,6 +6,6 @@
   <license>MIT</license>
   <keywords>guzz,xcode</keywords>
   <platform name="ios">
-    <hook type="after_prepare" src="scripts/iosrtc-swift-support.js"/>
+    <hook type="after_prepare" src="scripts/xcode-config-guzz.js"/>
   </platform>
 </plugin>

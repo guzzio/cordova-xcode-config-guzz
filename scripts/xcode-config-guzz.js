@@ -5,21 +5,19 @@
 // This hook automates this:
 // https://github.com/eface2face/cordova-plugin-iosrtc/blob/master/docs/Building.md
 
-console.log('running script');
-
 var fs = require('fs');
 var path = require('path');
-var BUILD_VERSION = '9.0';
+var xcode = require('xcode');
+var BUILD_VERSION = '10.2'; // Meteor: 10.0
 var BUILD_VERSION_XCODE = '"' + BUILD_VERSION + '"';
 var RUNPATH_SEARCH_PATHS = '@executable_path/Frameworks';
 var RUNPATH_SEARCH_PATHS_XCODE = '"' + RUNPATH_SEARCH_PATHS + '"';
-var ENABLE_BITCODE = 'NO';
+var ENABLE_BITCODE = 'NO'; // Meteor: NO
 var ENABLE_BITCODE_XCODE = '"' + ENABLE_BITCODE + '"';
 var BRIDGING_HEADER_END = '/Bridging-Header.h';
 var BRIDGING_HEADER_CONTENT = '\n#import "cordova-plugin-iosrtc-Bridging-Header.h"';
 var COMMENT_KEY = /_comment$/;
-// Update for Xcode 8.3 and cordova-plugin-iosrtc 4.0.2; for lower versions, use 2.3
-var SWIFT_VERSION = '3.0';
+var SWIFT_VERSION = '5.0'; // Meteor: 5.0, iosrtc: Swift 4.2+
 var DEVELOPMENT_TEAM = '6J92E6W79J'; // set dev team for code signing
 
 // Helpers
@@ -77,21 +75,21 @@ module.exports = function(context) {
   xcodeProject = xcode.project(xcodeProjectPath);
 
   // Showing info about the tasks to do
-  debug('fixing issues in the generated project files:');
-  debug('- "iOS Deployment Target" and "Deployment Target" to: ' + BUILD_VERSION_XCODE);
-  debug('- "Runpath Search Paths" to: ' + RUNPATH_SEARCH_PATHS_XCODE);
+  debug('adjusting the generated project files:');
+  // debug('- "iOS Deployment Target" and "Deployment Target" to: ' + BUILD_VERSION_XCODE);
+  // debug('- "Runpath Search Paths" to: ' + RUNPATH_SEARCH_PATHS_XCODE);
   debug('- "Objective-C Bridging Header" to: ' + swiftBridgingHeadXcode);
-  debug('- "ENABLE_BITCODE" set to: ' + ENABLE_BITCODE_XCODE);
+  // debug('- "ENABLE_BITCODE" set to: ' + ENABLE_BITCODE_XCODE);
   debug('- Swift version set to: ' + SWIFT_VERSION);
   debug('- Development team set to: ' + DEVELOPMENT_TEAM);
 
   // Massaging the files
 
   // "build.xcconfig"
-  swiftOptions.push('LD_RUNPATH_SEARCH_PATHS = ' + RUNPATH_SEARCH_PATHS);
+  // swiftOptions.push('LD_RUNPATH_SEARCH_PATHS = ' + RUNPATH_SEARCH_PATHS);
   swiftOptions.push('SWIFT_OBJC_BRIDGING_HEADER = ' + swiftBridgingHead);
-  swiftOptions.push('IPHONEOS_DEPLOYMENT_TARGET = ' + BUILD_VERSION);
-  swiftOptions.push('ENABLE_BITCODE = ' + ENABLE_BITCODE);
+  // swiftOptions.push('IPHONEOS_DEPLOYMENT_TARGET = ' + BUILD_VERSION);
+  // swiftOptions.push('ENABLE_BITCODE = ' + ENABLE_BITCODE);
   swiftOptions.push('SWIFT_VERSION = ' + SWIFT_VERSION);
   swiftOptions.push('DEVELOPMENT_TEAM = ' + DEVELOPMENT_TEAM);
   // NOTE: Not needed
@@ -108,10 +106,10 @@ module.exports = function(context) {
   // Adding or changing the parameters we need
   Object.keys(configurations).forEach(function(config) {
     buildSettings = configurations[config].buildSettings;
-    buildSettings.LD_RUNPATH_SEARCH_PATHS = RUNPATH_SEARCH_PATHS_XCODE;
+    // buildSettings.LD_RUNPATH_SEARCH_PATHS = RUNPATH_SEARCH_PATHS_XCODE;
     buildSettings.SWIFT_OBJC_BRIDGING_HEADER = swiftBridgingHeadXcode;
-    buildSettings.IPHONEOS_DEPLOYMENT_TARGET = BUILD_VERSION_XCODE;
-    buildSettings.ENABLE_BITCODE = ENABLE_BITCODE_XCODE;
+    // buildSettings.IPHONEOS_DEPLOYMENT_TARGET = BUILD_VERSION_XCODE;
+    // buildSettings.ENABLE_BITCODE = ENABLE_BITCODE_XCODE;
     buildSettings.SWIFT_VERSION = SWIFT_VERSION;
     buildSettings.DEVELOPMENT_TEAM = DEVELOPMENT_TEAM;
   });
